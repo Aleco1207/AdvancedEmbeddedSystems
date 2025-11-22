@@ -1,0 +1,185 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "platform.h"
+#include "xil_printf.h"
+#include "xuartps.h"
+
+//declaring an array which contains header and pixel informations
+unsigned char image_array[1024*1024*3+15];   //assigning a max dimension of 1024*1024*3+15
+unsigned char output_image[1024*1024*3+15];
+
+// In this case, receive_image function, first determines the image dimensions (by interpreting
+// header information) and after receives pixels informations.
+void receive_image(int* min_addr, int* max_addr, int* len_header, int* width, int* height){
+
+    unsigned char my_pixel;
+    int index = 0;                  //index for pixel transmission
+    int tmp;
+
+    //receiving first two bytes of the header (Magic Number) and "new line" byte
+    while (index < 3) {
+        my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR);
+        image_array[index] = my_pixel;
+        index++;
+    }
+
+    my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR); //first byte of width
+
+    //obtaining image width
+    while (my_pixel != 32) {                  //the loop continues until we find a "space" char
+    	image_array[index] = my_pixel;
+    	tmp = my_pixel - 48;                  //converting in decimal
+    	*width = *width*10 + tmp;
+    	index ++;
+    	my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR);
+    }
+
+    image_array[index] = my_pixel;   //copy in the array the "space" char
+    index++;
+
+    my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR); //first byte of height
+
+    //obtaining image height
+    while (my_pixel != 10) {             //the loop continues until we find a "new line" char
+    	image_array[index] = my_pixel;
+    	tmp = my_pixel - 48;             //converting in decimal
+    	*height = *height*10 + tmp;
+    	index ++;
+    	my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR);
+    }
+
+    image_array[index] = my_pixel;   //copy in the array the "new line" char
+    index++;
+
+    //receiving bytes of max color value and "new line" char
+    my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR); //first byte of max color value
+    while (my_pixel != 10) {             //the loop continues until we find a "new line" char
+    	image_array[index] = my_pixel;
+    	index ++;
+    	my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR);
+    }
+
+    image_array[index] = my_pixel;   //copy in the array the "new line" byte
+    index++;
+
+    *len_header = index;     //at this point the index returns the header length
+
+    //receiving pixels informations
+    for (int j=0; j<3*(*width)*(*height); j++){
+        my_pixel = XUartPs_RecvByte(XPAR_PS7_UART_1_BASEADDR);
+        if (my_pixel < *min_addr) *min_addr = my_pixel;
+        if (my_pixel > *max_addr) *max_addr = my_pixel;
+        image_array[j+(*len_header)]=my_pixel;
+    }
+}
+
+// scale is the function which scales pixels values by stretching them between 0 and 255.
+void scale(int min, int max, int len_header, int width, int height){
+
+	int scale = 255 / (max - min);
+	for (int i=0; i<3*(width*height)+len_header; i++){
+		if (i > len_header-1) {
+			unsigned char scaled_pixel = (image_array[i] - min) * scale;
+			XUartPs_SendByte(XPAR_PS7_UART_1_BASEADDR, scaled_pixel);
+		} else {
+			unsigned char header = image_array[i];
+			XUartPs_SendByte(XPAR_PS7_UART_1_BASEADDR, header);
+			}
+	 }
+}
+
+
+// histogram_equalization function
+void histogram_equalization(unsigned char image[], int len_header, int width, int height, unsigned char output_image[]){
+	int histogram[256] = {0};       //initializing histogram array
+	int cdf[256];                   //declaring cumulative distribution function array
+	int map[256];                   //declaring mapping array
+	int total_pixels = width*height;
+	unsigned char p;
+	int i;
+	int cdf_min=total_pixels;    //cdf_min is set as the maximum value it can assume
+
+	for(i=0; i<3*total_pixels+len_header; i++){
+		if(i>len_header-1){
+			p=image[i];
+			histogram[p]=histogram[p]+1;     //counting occurences of each grayscale value
+		}
+	}
+
+	//construction of the cdf
+	cdf[0]=histogram[0];         //first value of the cumulative distribution function
+	for(i=1; i<256;i++){
+		cdf[i]=cdf[i-1]+histogram[i];
+	}
+
+	//smallest non-zero value in the cdf
+	for(i=0; i<256;i++){
+		if(cdf[i]!=0 && cdf[i]<cdf_min) cdf_min=cdf[i];
+	}
+
+	//mapping
+	for(i=0; i<256; i++){
+		map[i] = round((cdf[i]-cdf_min)/(total_pixels-cdf_min)*255);
+	}
+
+	for(i=0; i<3*total_pixels+len_header;i++){
+		if(i<len_header) output_image[i]=image[i];     //header informations
+		else {
+			p=image[i];
+			output_image[i]=map[p];
+		}
+	}
+}
+
+
+
+
+
+int main()
+{
+    init_platform();
+    XUartPs Uart_1_PS;
+    u16 DeviceId_1= XPAR_PS7_UART_1_DEVICE_ID;
+    int Status_1;
+    XUartPs_Config *Config_1;
+    Config_1 = XUartPs_LookupConfig(DeviceId_1);
+    if (NULL == Config_1) {
+      return XST_FAILURE;
+    }
+    Status_1 = XUartPs_CfgInitialize(&Uart_1_PS, Config_1, Config_1->BaseAddress); //initializing UART
+    if (Status_1 != XST_SUCCESS) {
+      return XST_FAILURE;
+    }
+    u32 BaudRate = (u32)115200;
+    Status_1 = XUartPs_SetBaudRate(&Uart_1_PS, BaudRate); //setting BaudRate = 115200
+    if (Status_1 != (s32)XST_SUCCESS) {
+      return XST_FAILURE;
+    }
+    // Min (0) and max (255) are the min and max values for each pixel (color information in grayscale).
+    // In this case, min is initialized as 255 and max as 0, because we use them to find the min and max
+    // pixel value in the prototype image by comparing all pixels.
+    int min = 255;
+    int max = 0;
+    int len_header = 0;
+    int width = 0;
+    int height = 0;
+    receive_image(&min, &max, &len_header, &width, &height);
+    //scale(min, max, len_header, width, height);
+    histogram_equalization(image_array, len_header, width, height, output_image);
+
+    cleanup_platform();
+    return 0;
+}
+
+
+
+//int start, stop;
+// Xil_DCacheDisable();
+//
+// Xil_ICacheDisable();
+// Xil_L2CacheDisable();
+// start=Xil_In32(XPAR_GLOBAL_TMR_BASEADDR);
+// for (int i=0;i<3*32*32;i++)
+// 	image[i]=255-image[i];
+// stop=Xil_In32(XPAR_GLOBAL_TMR_BASEADDR);
+// xil_printf("Duration=%d \r\n", stop-start);
