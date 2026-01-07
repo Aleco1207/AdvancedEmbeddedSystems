@@ -343,6 +343,7 @@ int main()
 	/*			Step 1: Testing the loopback implementation		    */
 	/* ------------------------------------------------------------ */
 /*  //Decomment only this section to try step1 script
+	int SampleL, SampleR;
 	while (1){
 
 		//Timer Start
@@ -440,5 +441,6 @@ int main()
 	cleanup_platform();
 	return 0;
 }
+
 
 
