@@ -397,6 +397,10 @@ int main()
 	static int histL[N_LP] = {0};
 	static int histR[N_LP] = {0};
 
+    //If we disable the cache, we need much more time (~32400 ticks)
+	//Xil_ICacheDisable();
+	//Xil_DCacheDisable();
+
 	while (1) {
 
 		//Timer start
@@ -436,4 +440,5 @@ int main()
 	cleanup_platform();
 	return 0;
 }
+
 
