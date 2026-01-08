@@ -1,0 +1,43 @@
+### Result file for Laboratory 4 - Alessia Congia 70/91/00160 ###
+
+!!!Time is in clock cycles!!!
+
+Miscellaneous options for optimization: 
+Compiler Optimization: 
+-Optimization level-> Optimize most (-O3)
+-Flags-> -c -fmessage-length=0 -MT"$@" -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=hard -std=c99 -mvectorize-with-neon-quad -ftree-vectorize -fopt-info-vec-optimized -fopt-info-vec-missed -ffast-math
+Linker Optimization:
+-Flags-> -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=hard -std=c99 -mvectorize-with-neon-quad -ftree-vectorize -Wl,-build-id=none -specs=Xilinx.spec            
+
+Testing different array sizes.
+
+---ARRAY_SIZE 10---
+
+Without optimization:
+Serial Errors = 0, Parallel Errors = 0, Serial time = 4173, Parallel time = 3314
+
+With optimization:
+Serial time = 281 cycles
+
+---ARRAY_SIZE 20---
+Without optimization:
+Serial Errors = 0, Parallel Errors = 0, Serial time = 7804, Parallel time = 5684
+
+With optimization:
+Serial time = 1125 cycle
+
+---ARRAY_SIZE 100---
+
+Without optimization:
+Serial Errors = 0, Parallel Errors = 0, Serial time = 37652, Parallel time = 24026
+
+With optimization:
+Serial time = 3087 cycles
+
+---ARRAY_SIZE 1000---
+
+Without optimization:
+Serial Errors = 0, Parallel Errors = 0, Serial time = 325997, Parallel time = 195912
+
+With optimization:
+Serial time = 29747 cycles
