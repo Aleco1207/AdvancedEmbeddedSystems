@@ -1,0 +1,176 @@
+##testing image compressed_8.bin                                                                               
+Started
+                                                                        
+        Waiting for an image ...
+                                              
+Image successfully received!
+                                                  
+
+ARNING] Saturation POS: 487 > 127
+                                            
+
+ARNING] Saturation POS: 548 > 127
+                                            
+
+ARNING] Saturation POS: 330 > 127
+                                            
+
+ARNING] Saturation POS: 910 > 127
+                                            
+
+ARNING] Saturation POS: 746 > 127
+                                            
+
+ARNING] Saturation POS: 802 > 127
+                                            
+
+ARNING] Saturation NEG: -291 < -128
+                                          
+
+ARNING] Saturation POS: 694 > 127
+                                            
+
+ARNING] Saturation POS: 647 > 127
+                                            
+
+ARNING] Saturation POS: 133 > 127
+                                            
+
+ARNING] Saturation POS: 257 > 127
+                                            
+
+ARNING] Saturation POS: 504 > 127
+                                            
+
+ARNING] Saturation POS: 646 > 127
+                                            
+
+ARNING] Saturation POS: 515 > 127
+                                            
+
+ARNING] Saturation POS: 706 > 127
+                                            
+
+ARNING] Saturation NEG: -1073 < -128
+                                         
+
+ARNING] Saturation POS: 781 > 127
+                                            
+
+ARNING] Saturation POS: 805 > 127
+                                            
+
+ARNING] Saturation POS: 1034 > 127
+                                           
+
+ARNING] Saturation POS: 145 > 127
+                                            
+
+ARNING] Saturation POS: 406 > 127
+                                            
+
+ARNING] Saturation POS: 713 > 127
+                                            
+
+ARNING] Saturation POS: 807 > 127
+                                            
+
+ARNING] Saturation POS: 141 > 127
+                                            
+
+ARNING] Saturation POS: 195 > 127
+                                            
+
+ARNING] Saturation POS: 691 > 127
+                                            
+
+ARNING] Saturation NEG: -209 < -128
+                                          
+
+ARNING] Saturation POS: 425 > 127
+                                            
+
+ARNING] Saturation POS: 376 > 127
+                                            
+
+ARNING] Saturation POS: 132 > 127
+                                            
+
+ARNING] Saturation POS: 236 > 127
+                                            
+
+ARNING] Saturation POS: 517 > 127
+                                            
+
+ARNING] Saturation POS: 210 > 127
+                                            
+
+ARNING] Saturation POS: 1037 > 127
+                                           
+
+ARNING] Saturation POS: 596 > 127
+                                            
+
+ARNING] Saturation NEG: -147 < -128
+                                          
+
+ARNING] Saturation POS: 208 > 127
+                                            
+
+ARNING] Saturation POS: 602 > 127
+                                            
+
+ARNING] Saturation POS: 773 > 127
+                                            
+
+ARNING] Saturation POS: 667 > 127
+                                            
+
+ARNING] Saturation POS: 694 > 127
+                                            
+
+ARNING] Saturation NEG: -274 < -128
+                                          
+
+ARNING] Saturation NEG: -299 < -128
+                                          
+
+ARNING] Saturation POS: 521 > 127
+                                            
+
+ARNING] Saturation POS: 619 > 127
+                                            
+
+ARNING] Saturation NEG: -235 < -128
+                                          
+
+ARNING] Saturation NEG: -875 < -128
+                                          
+
+ARNING] Saturation POS: 409 > 127
+                                            
+
+ARNING] Saturation NEG: -798 < -128
+                                          
+
+ARNING] Saturation POS: 140 > 127
+                                            
+
+ARNING] Saturation NEG: -777 < -128
+                                          
+
+ARNING] Saturation POS: 719 > 127
+                                            
+
+ARNING] Saturation NEG: -251 < -128
+                                          
+max= 3 
+                                                                        
+        Receiving Duration: 3048750728
+                                        
+Classifying Duration: 58214556
+                                                
+Total Duration: 3106965284
+                                                    
+Waiting for an image ...
+   

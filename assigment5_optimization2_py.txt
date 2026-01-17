@@ -1,0 +1,29 @@
+//Converting custom_bias and custom_weights from Q8.8 format to Q1.7 format
+
+import re
+
+
+def convert_to_q17(input_file, output_file):
+    with open(input_file, 'r') as f:
+        lines = f.readlines()
+
+    with open(output_file, 'w') as f:
+        for line in lines:
+            line = line.replace("CUSTOM_WEIGHTS_H_", "CUSTOM_WEIGHTS_Q17_H_")
+
+            if "#define" in line:
+                parts = re.split(r'(\s+|,)', line)
+                new_parts = []
+                for p in parts:
+                    if re.match(r'^-?\d+$', p):
+                        val = int(p)
+                        q17_val = (val + 128) % 256 - 128
+                        new_parts.append(str(q17_val))
+                    else:
+                        new_parts.append(p)
+                line = "".join(new_parts)
+
+            f.write(line)
+
+
+convert_to_q17("custom_weights.h", "custom_weights_q17.h")

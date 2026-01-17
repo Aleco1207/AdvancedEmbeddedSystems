@@ -1,0 +1,23 @@
+def compress_image_to_q08(input_path, output_path):
+    with open(input_path, "rb") as f_in, open(output_path, "wb") as f_out:
+        while True:
+            #Reading 2 bytes at a time
+            pixel_bytes = f_in.read(2)
+            if not pixel_bytes:
+                break
+
+            #We take the byte in position 0 which represents decimals
+            significant_byte = pixel_bytes[0]
+            f_out.write(bytes([significant_byte]))
+
+
+compress_image_to_q08("0.bin", "compressed_0.bin")
+compress_image_to_q08("1.bin", "compressed_1.bin")
+compress_image_to_q08("2.bin", "compressed_2.bin")
+compress_image_to_q08("3.bin", "compressed_3.bin")
+compress_image_to_q08("4.bin", "compressed_4.bin")
+compress_image_to_q08("5.bin", "compressed_5.bin")
+compress_image_to_q08("6.bin", "compressed_6.bin")
+compress_image_to_q08("7.bin", "compressed_7.bin")
+compress_image_to_q08("8.bin", "compressed_8.bin")
+compress_image_to_q08("9.bin", "compressed_9.bin")

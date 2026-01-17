@@ -1,0 +1,59 @@
+##Here there are 8.bin and 9.bin without optimization
+
+Waiting for an image ...
+                                              
+Image successfully received!
+                                                  
+max= 8 
+                                                                        
+Receiving Duration: 3313399426
+                                        
+Classifying Duration: 962857
+                                                  
+Total Duration: 3314362283
+-----------------------------------------------------------
+                                                    
+Waiting for an image ...
+                                                      
+Image successfully received!
+                                                  
+max= 9 
+                                                                        
+Receiving Duration: 2248419004
+                                        
+Classifying Duration: 960283
+                                                  
+Total Duration: 2249379287
+                                                    
+Waiting for an image ...
+  
+
+##Now are sent compressed_8.bin and compressed_9.bin (receiving time is halved, while classifying time is the same)
+-----------------------------------------------------------
+Waiting for an image ...
+                                                      
+Image successfully received!
+                                                  
+max= 8 
+                                                                        
+Receiving Duration: 1638684078   3313399426
+                                        
+Classifying Duration: 960176
+                                                  
+Total Duration: 1639644254
+-------------------------------------------------------------
+                                                    
+Waiting for an image ...
+                                                      
+Image successfully received!
+                                                  
+max= 9 
+                                                                        
+Receiving Duration: 1492956828
+                                        
+Classifying Duration: 960307
+                                                  
+Total Duration: 1493917135
+                                                    
+Waiting for an image ...
+  
